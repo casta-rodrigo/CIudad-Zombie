@@ -111,26 +111,40 @@ Juego.capturarMovimiento = function(tecla) {
   var movX = 0;
   var movY = 0;
   var velocidad = this.jugador.velocidad;
-
+  console.log(velocidad);
   // El movimiento esta determinado por la velocidad del jugador
-  if (tecla == 'izq') {
-    movX = -velocidad;
-  }
-  if (tecla == 'arriba') {
-    movY = -velocidad;
-  }
   if (tecla == 'der') {
-    movX = velocidad;
+    movX = -velocidad;
+    Jugador.alto = 15;
+    Jugador.ancho = 30;
+    Jugador.sprite = 'imagenes/auto_rojo_derecha.png';
   }
   if (tecla == 'abajo') {
+    movY = -velocidad;
+    Jugador.alto = 30;
+    Jugador.ancho = 15;
+    Jugador.sprite = 'imagenes/auto_rojo_abajo.png'
+    console.log(tecla);
+  }
+  if (tecla == 'izq') {
+    movX = velocidad;
+    Jugador.alto = 15;
+    Jugador.ancho = 30;
+    Jugador.sprite = 'imagenes/auto_rojo_izquierda.png';
+
+  }
+  if (tecla == 'arriba') {
     movY = velocidad;
+    Jugador.alto = 30;
+    Jugador.ancho = 15;
+    Jugador.sprite = 'imagenes/auto_rojo_arriba.png';
   }
 
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
     de sus metodos  */
-
+    Jugador.mover(movX,movY);
     /* COMPLETAR */
   }
 };
@@ -140,7 +154,7 @@ Juego.dibujar = function() {
   Dibujante.borrarAreaDeJuego();
   //Se pinta la imagen de fondo segun el estado del juego
   this.dibujarFondo();
-
+  Dibujante.dibujarEntidad(Jugador);
 
   /* Aca hay que agregar la logica para poder dibujar al jugador principal
   utilizando al dibujante y los metodos que nos brinda.
