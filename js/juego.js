@@ -18,11 +18,17 @@ var Juego = {
   ganador: false,
 
   obstaculosCarretera: [
-    /*Aca se van a agregar los obstaculos visibles. Tenemos una valla horizontal
-    de ejemplo, pero podras agregar muchos mas. */
-    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1)
-
+    new Obstaculo('imagenes/valla_vertical.png', 180,450,30,30,1),
+    new Obstaculo('imagenes/valla_horizontal.png', 840,300,30,30,1),
+    new Obstaculo('imagenes/valla_horizontal.png',320, 150,30,30,1),
+    new Obstaculo('imagenes/valla_horizontal.png', 70, 430, 30, 30, 1),
+    new Obstaculo('imagenes/bache.png', 750,250,30,30,1),
+    new Obstaculo('imagenes/bache.png', 865,280,30,30,1),
+    new Obstaculo('imagenes/bache.png',190,380,30,30,1),
+    new Obstaculo('imagenes/auto_verde_abajo.png',540,280,15,30,1),
+    new Obstaculo('imagenes/auto_verde_derecha.png',520,420,30,15,1),
   ],
+  //////////(sprite, x, y, ancho, alto, potencia)
   /* Estos son los bordes con los que se puede chocar, por ejemplo, la vereda.
    Ya estan ubicados en sus lugares correspondientes. Ya aparecen en el mapa, ya
    que son invisibles. No tenes que preocuparte por ellos.*/
@@ -44,7 +50,12 @@ var Juego = {
   ],
   // Los enemigos se agregaran en este arreglo.
   enemigos: [
-
+    new ZombieCaminante('imagenes/zombie1.png',450,450,10,10,577, 961),
+    new ZombieCaminante('imagenes/zombie1.png',450,450,10,10,577,961),
+    new ZombieCaminante('imagenes/zombie1.png',450,450,10,10,577,961),
+    new ZombieCaminante('imagenes/zombie1.png',450,450,10,10,577,961),
+    new ZombieCaminante('imagenes/zombie1.png',450,450,10,10,577,961),
+    new 
   ]
 
 }
@@ -111,7 +122,6 @@ Juego.capturarMovimiento = function(tecla) {
   var movX = 0;
   var movY = 0;
   var velocidad = this.jugador.velocidad;
-  console.log(velocidad);
   // El movimiento esta determinado por la velocidad del jugador
   if (tecla == 'der') {
     movX = -velocidad;
@@ -124,7 +134,6 @@ Juego.capturarMovimiento = function(tecla) {
     Jugador.alto = 30;
     Jugador.ancho = 15;
     Jugador.sprite = 'imagenes/auto_rojo_abajo.png'
-    console.log(tecla);
   }
   if (tecla == 'izq') {
     movX = velocidad;
@@ -143,9 +152,8 @@ Juego.capturarMovimiento = function(tecla) {
   // Si se puede mover hacia esa posicion hay que hacer efectivo este movimiento
   if (this.chequearColisiones(movX + this.jugador.x, movY + this.jugador.y)) {
     /* Aca tiene que estar la logica para mover al jugador invocando alguno
-    de sus metodos  */
-    Jugador.mover(movX,movY);
-    /* COMPLETAR */
+    de sus metodos */
+    Jugador.mover(movX,movY)
   }
 };
 
@@ -169,7 +177,7 @@ Juego.dibujar = function() {
 
   // Se recorren los enemigos pintandolos
   this.enemigos.forEach(function(enemigo) {
-    /* Completar */
+    Dibujante.dibujarEntidad(enemigo);
   });
 
   // El dibujante dibuja las vidas del jugador
@@ -214,10 +222,10 @@ Juego.chequearColisiones = function(x, y) {
   var puedeMoverse = true
   this.obstaculos().forEach(function(obstaculo) {
     if (this.intersecan(obstaculo, this.jugador, x, y)) {
-
-      /*COMPLETAR, obstaculo debe chocar al jugador*/
-
-      puedeMoverse = false
+      this.jugador.salud(obstaculo.potencia);
+      puedeMoverse = false;
+      console.log(obstaculo.potencia);
+      console.log(this.jugador.vidas);
     }
   }, this)
   return puedeMoverse
